@@ -1,0 +1,106 @@
+@use "primeicons/primeicons.css";
+@use "primeflex/primeflex.scss";
+// regular style toast
+@use 'ngx-toastr/toastr';
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+$color-primary: #00529B;     // Azul fuerte y serio (Essalud azul institucional)
+$color-secondary: #7A9CC6;   // Azul grisáceo suave para secundarios y fondos
+$color-success: #4CAF50;     // Verde estándar y agradable para éxito
+$color-warning: #E53935;     // Rojo intenso para alertas o warnings
+
+// Opcional: variantes más claras/oscurecidas
+$color-primary-light: #4A7AC7;
+$color-secondary-light: #A9BCD9;
+$color-success-light: #81C784;
+$color-warning-light: #EF5350;
+
+$color-primary-darker: #00396E;       // Azul institucional más oscuro
+$color-secondary-darker: #5A7CA2;     // Azul grisáceo más profundo
+$color-success-darker: #388E3C;       // Verde éxito más oscuro
+$color-warning-darker: #B71C1C;       // Rojo alerta más intenso
+
+
+:root {
+  --primary: #{$color-primary} !important;
+  --secondary: #{$color-secondary} !important;
+  --success: #{$color-success} !important;
+  --warning: #{$color-warning} !important;
+
+  --primary-light: #{$color-primary-light} !important;
+  --secondary-light: #{$color-secondary-light} !important;
+  --success-light: #{$color-success-light} !important;
+  --warning-light: #{$color-warning-light} !important;
+
+  --primary-darker: #{$color-primary-darker} !important;
+  --secondary-darker: #{$color-secondary-darker} !important;
+  --success-darker: #{$color-success-darker} !important;
+  --warning-darker: #{$color-warning-darker} !important;
+
+  --p-button-primary-background: #{$color-primary} !important;
+  --p-button-primary-border-color: #{$color-primary-darker} !important;
+
+  --p-button-outlined-primary-border-color: #{$color-primary-light} !important;
+  --p-button-outlined-primary-color: #{$color-primary} !important;
+
+  --p-checkbox-checked-border-color: #{$color-primary} !important;
+  --p-checkbox-checked-background: #{$color-primary} !important;
+  --p-checkbox-checked-hover-background: #{$color-primary-darker} !important;
+  --p-checkbox-checked-hover-border-color: #{$color-primary-darker} !important;
+
+  --p-floatlabel-focus-color: #{$color-primary} !important;
+  --p-floatlabel-active-color: #{$color-primary} !important;
+  --p-floatlabel-invalid-color: #{$color-warning-light} !important;
+
+  --p-select-option-selected-focus-background: #{$color-secondary-light} !important;
+  --p-select-option-selected-focus-color: #{$color-primary-darker} !important;
+
+  --p-select-option-selected-background: #{$color-secondary-light} !important;
+  --p-select-option-selected-color: #{$color-primary-darker} !important;
+
+  --p-form-field-border-color: #{$color-secondary-light} !important;
+
+  --p-form-field-focus-border-color: #{$color-primary} !important;
+
+  --p-button-primary-hover-background: #{$color-secondary-light} !important;
+  --p-button-primary-active-background: #{$color-secondary-light} !important;
+  --p-button-primary-border-color: #{$color-secondary-light} !important;
+  --p-button-primary-hover-border-color: #{$color-secondary-light} !important;
+  --p-button-primary-active-border-color: #{$color-secondary-light} !important;
+
+  --p-datatable-row-selected-background: #{$color-secondary-light} !important;
+  --p-datatable-row-selected-color: #{$color-primary-darker} !important;
+  --p-datatable-body-cell-selected-border-color: #{$color-primary-darker} !important;
+
+  --p-button-text-primary-color: #{$color-primary-darker} !important;
+
+  --p-datepicker-date-selected-background: #{$color-primary} !important;
+
+  --p-progressspinner-color-one: #{$color-primary} !important;
+  --p-progressspinner-color-two: #{$color-primary-light} !important;
+  --p-progressspinner-color-three: #{$color-primary} !important;
+  --p-progressspinner-color-four: #{$color-primary-darker} !important;
+
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body:not(.login-page) .grecaptcha-badge {
+  visibility: hidden !important;
+}

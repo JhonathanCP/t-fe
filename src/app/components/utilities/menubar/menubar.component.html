@@ -1,0 +1,55 @@
+<!-- Modal de cambio de contraseña -->
+<p-dialog header="Cambiar contraseña" [(visible)]="showChangePasswordModal" [modal]="true" [style]="{ height: '40vh' }" [draggable]="false">
+  <div class="password-modal-content">
+    <div class="mb-3 password-field">
+      <label for="newPassword" class="password-label">Nueva contraseña</label>
+      <p-password id="newPassword" [(ngModel)]="newPassword" [disabled]="changeLoading" [toggleMask]="true" autocomplete="off" class="password-input"
+        weakLabel="Débil" mediumLabel="Media" strongLabel="Fuerte" promptLabel="Ingrese nueva contraseña">
+      </p-password>
+    </div>
+    <div class="mb-2 password-field">
+      <label for="confirmPassword" class="password-label">Confirmar contraseña</label>
+      <p-password id="confirmPassword" [(ngModel)]="confirmPassword" [disabled]="changeLoading" [toggleMask]="true" autocomplete="off" class="password-input"
+        weakLabel="Débil" mediumLabel="Media" strongLabel="Fuerte">
+      </p-password>
+    </div>
+    <div *ngIf="confirmPassword && newPassword !== confirmPassword" class="text-danger mt-2 password-error">
+      Las contraseñas no coinciden.
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancelar" icon="pi pi-times" (click)="closeChangePasswordModal()" class="p-button-text" [disabled]="changeLoading"></button>
+    <button pButton icon="pi pi-save" (click)="changePassword()" [disabled]="changeLoading || !newPassword || !confirmPassword || newPassword !== confirmPassword" class="mx-2">
+      <ng-container *ngIf="changeLoading">
+        <span class="pi pi-spin pi-spinner" style="margin-right:8px;"></span>
+      </ng-container>
+      <span *ngIf="!changeLoading">Guardar</span>
+    </button>
+  </ng-template>
+</p-dialog>
+<div class="menu-bar-container p-d-flex p-ai-center p-jc-between">
+  <div class="logo p-d-flex p-ai-center">    
+    <img class="logo-essalud logo-adjust" src="resources/finSight.png" alt="Logo Essalud" />
+    <!-- Logo SISPOI para móviles - se muestra solo en sm -->
+    <!-- <img class="logo-sispoi-mobile" src="resources/logo_sispoi.png" alt="Logo Sispoi" /> -->
+  </div>
+
+  <!-- <div class="system-name">
+    <img class="logo-sispoi logo-adjust" src="resources/logo_sispoi.png" alt="Logo Sispoi" />
+  </div> -->
+
+  <div class="menu-actions p-d-flex p-ai-center">
+
+    <button *ngIf="showBackButton" pButton icon="pi pi-arrow-left" class="p-button-text mr-1" (click)="goBack()"></button>
+
+    <button pButton icon="pi pi-home" class="p-button-text" (click)="goToLogin()"></button>
+    <!-- <p-tieredMenu [model]="settingsMenuItems" #settingsMenu popup></p-tieredMenu>
+    <button pButton icon="pi pi-cog" class="p-button-text" (click)="settingsMenu.toggle($event)"></button> -->
+
+    <p-tieredMenu [model]="userMenuItems" #userMenu popup></p-tieredMenu>
+    <div class="user-section p-d-flex p-ai-center" (click)="userMenu.toggle($event)" style="cursor: pointer;">      
+      <button pButton icon="pi pi-user" class="p-button-text"><span class="user-name">{{ userName }}</span></button>
+    </div>
+
+  </div>
+</div>

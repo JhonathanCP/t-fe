@@ -1,0 +1,344 @@
+<div class="formulario-container mx-2 mx-md-5 my-2">
+    <!-- Header -->
+    <div class="grid">
+        <div class="col-12">
+            <p-card>
+                <div class="text-center mb-2">
+                    <h2 class="text-primary font-bold text-2xl md:text-3xl mb-1">
+                        <i class="pi pi-chart-line mr-2"></i>
+                        Predicción de Hábitos Financieros
+                    </h2>
+                    <p class="text-600 text-base md:text-lg">
+                        Completa el formulario para obtener una predicción personalizada sobre tus hábitos financieros y
+                        propensión al ahorro
+                    </p>
+                </div>
+            </p-card>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="grid mt-3" *ngIf="!showResults">
+        <div class="col-12">
+            <p-card>
+                <form [formGroup]="predictionForm" (ngSubmit)="onSubmit()">
+
+                    <!-- Información Personal -->
+                    <p-fieldset legend="Información Personal" [toggleable]="true">
+                        <div class="grid">
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="edad" class="font-semibold">Edad *</label>
+                                    <p-inputNumber id="edad" formControlName="edad" [min]="18" [max]="100"
+                                        placeholder="Ingresa tu edad" styleClass="w-full" [style]="{'height': '48px'}"
+                                        [class.ng-invalid]="predictionForm.get('edad')?.invalid && predictionForm.get('edad')?.touched">
+                                    </p-inputNumber>
+                                    <small
+                                        *ngIf="predictionForm.get('edad')?.invalid && predictionForm.get('edad')?.touched"
+                                        class="text-red-500">
+                                        La edad es requerida (entre 18 y 100 años)
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="genero" class="font-semibold">Género *</label>
+                                    <p-select appendTo="body" id="genero" formControlName="genero"
+                                        [options]="generoOptions" placeholder="Selecciona tu género"
+                                        styleClass="w-full select-height"
+                                        [class.ng-invalid]="predictionForm.get('genero')?.invalid && predictionForm.get('genero')?.touched">
+                                    </p-select>
+                                    <small
+                                        *ngIf="predictionForm.get('genero')?.invalid && predictionForm.get('genero')?.touched"
+                                        class="text-red-500">
+                                        El género es requerido
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="field">
+                                    <label for="educacion" class="font-semibold">Nivel de Educación *</label>
+                                    <p-select appendTo="body" id="educacion" formControlName="educacion"
+                                        [options]="educacionOptions" placeholder="Selecciona tu nivel de educación"
+                                        styleClass="w-full select-height"
+                                        [class.ng-invalid]="predictionForm.get('educacion')?.invalid && predictionForm.get('educacion')?.touched">
+                                    </p-select>
+                                    <small
+                                        *ngIf="predictionForm.get('educacion')?.invalid && predictionForm.get('educacion')?.touched"
+                                        class="text-red-500">
+                                        El nivel de educación es requerido
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </p-fieldset>
+
+                    <p-divider></p-divider>
+
+                    <!-- Información Financiera -->
+                    <p-fieldset legend="Información Financiera" [toggleable]="true">
+                        <div class="grid">
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="ingreso" class="font-semibold">Ingreso Mensual (S/) *</label>
+                                    <p-inputNumber id="ingreso" formControlName="ingreso" mode="currency" currency="PEN"
+                                        locale="es-PE" [min]="500" [max]="50000"
+                                        placeholder="Ingreso entre S/ 500 - S/ 50,000" styleClass="w-full"
+                                        [class.ng-invalid]="predictionForm.get('ingreso')?.invalid && predictionForm.get('ingreso')?.touched">
+                                    </p-inputNumber>
+                                    <small
+                                        *ngIf="predictionForm.get('ingreso')?.invalid && predictionForm.get('ingreso')?.touched"
+                                        class="text-red-500">
+                                        El ingreso mensual debe estar entre S/ 500 y S/ 50,000
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="ahorro" class="font-semibold">Ahorro Mensual (S/) *</label>
+                                    <p-inputNumber id="ahorro" formControlName="ahorro" mode="currency" currency="PEN"
+                                        locale="es-PE" [min]="0" placeholder="Ingresa tu ahorro mensual"
+                                        styleClass="w-full"
+                                        [class.ng-invalid]="predictionForm.get('ahorro')?.invalid && predictionForm.get('ahorro')?.touched">
+                                    </p-inputNumber>
+                                    <small
+                                        *ngIf="predictionForm.get('ahorro')?.invalid && predictionForm.get('ahorro')?.touched"
+                                        class="text-red-500">
+                                        El ahorro mensual es requerido
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="endeudamiento" class="font-semibold">Endeudamiento Mensual (S/)
+                                        *</label>
+                                    <p-inputNumber id="endeudamiento" formControlName="endeudamiento" mode="currency"
+                                        currency="PEN" locale="es-PE" [min]="0"
+                                        placeholder="Ingresa tu endeudamiento mensual" styleClass="w-full"
+                                        [class.ng-invalid]="predictionForm.get('endeudamiento')?.invalid && predictionForm.get('endeudamiento')?.touched">
+                                    </p-inputNumber>
+                                    <small
+                                        *ngIf="predictionForm.get('endeudamiento')?.invalid && predictionForm.get('endeudamiento')?.touched"
+                                        class="text-red-500">
+                                        El endeudamiento mensual es requerido
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="ocio" class="font-semibold">Gasto en Ocio (S/) *</label>
+                                    <p-inputNumber id="ocio" formControlName="ocio" mode="currency" currency="PEN"
+                                        locale="es-PE" [min]="0" placeholder="Ingresa tu gasto en ocio"
+                                        styleClass="w-full"
+                                        [class.ng-invalid]="predictionForm.get('ocio')?.invalid && predictionForm.get('ocio')?.touched">
+                                    </p-inputNumber>
+                                    <small
+                                        *ngIf="predictionForm.get('ocio')?.invalid && predictionForm.get('ocio')?.touched"
+                                        class="text-red-500">
+                                        El gasto en ocio es requerido
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </p-fieldset>
+
+                    <p-divider></p-divider>
+
+                    <!-- Información de Tarjetas y Hábitos -->
+                    <p-fieldset legend="Tarjetas de Crédito y Hábitos" [toggleable]="true">
+                        <div class="grid">
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="tarjetas" class="font-semibold">Número de Tarjetas de Crédito *</label>
+                                    <p-inputNumber id="tarjetas" formControlName="tarjetas" [min]="0" [max]="10"
+                                        placeholder="Número de tarjetas (0-10)" styleClass="w-full"
+                                        [class.ng-invalid]="predictionForm.get('tarjetas')?.invalid && predictionForm.get('tarjetas')?.touched">
+                                    </p-inputNumber>
+                                    <small
+                                        *ngIf="predictionForm.get('tarjetas')?.invalid && predictionForm.get('tarjetas')?.touched"
+                                        class="text-red-500">
+                                        El número de tarjetas es requerido (0-10)
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="frecuenciaTarjeta" class="font-semibold">Frecuencia de Uso de Tarjeta
+                                        *</label>
+                                    <p-select appendTo="body" id="frecuenciaTarjeta" formControlName="frecuenciaTarjeta"
+                                        [options]="frecuenciaOptions" placeholder="¿Con qué frecuencia usas tarjeta?"
+                                        styleClass="w-full select-height"
+                                        [class.ng-invalid]="predictionForm.get('frecuenciaTarjeta')?.invalid && predictionForm.get('frecuenciaTarjeta')?.touched">
+                                    </p-select>
+                                    <small
+                                        *ngIf="predictionForm.get('frecuenciaTarjeta')?.invalid && predictionForm.get('frecuenciaTarjeta')?.touched"
+                                        class="text-red-500">
+                                        La frecuencia de uso es requerida
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="presupuestaGastos" class="font-semibold">¿Presupuestas tus gastos
+                                        regularmente? *</label>
+                                    <p-select appendTo="body" id="presupuestaGastos" formControlName="presupuestaGastos"
+                                        [options]="frecuenciaOptions" placeholder="¿Con qué frecuencia presupuestas?"
+                                        styleClass="w-full select-height"
+                                        [class.ng-invalid]="predictionForm.get('presupuestaGastos')?.invalid && predictionForm.get('presupuestaGastos')?.touched">
+                                    </p-select>
+                                    <small
+                                        *ngIf="predictionForm.get('presupuestaGastos')?.invalid && predictionForm.get('presupuestaGastos')?.touched"
+                                        class="text-red-500">
+                                        Esta opción es requerida
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 lg:col-6">
+                                <div class="field">
+                                    <label for="pagoMinimo" class="font-semibold">¿Sueles pagar solo el monto mínimo de
+                                        la tarjeta? *</label>
+                                    <p-select appendTo="body" id="pagoMinimo" formControlName="pagoMinimo"
+                                        [options]="frecuenciaOptions" placeholder="¿Con qué frecuencia pagas el mínimo?"
+                                        styleClass="w-full select-height"
+                                        [class.ng-invalid]="predictionForm.get('pagoMinimo')?.invalid && predictionForm.get('pagoMinimo')?.touched">
+                                    </p-select>
+                                    <small
+                                        *ngIf="predictionForm.get('pagoMinimo')?.invalid && predictionForm.get('pagoMinimo')?.touched"
+                                        class="text-red-500">
+                                        Esta opción es requerida
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </p-fieldset>
+
+                    <p-divider></p-divider>
+
+                    <!-- Botones -->
+                    <div class="flex flex-column md:flex-row justify-content-center gap-3 mt-4">
+                        <button type="button" pButton label="Limpiar" icon="pi pi-refresh" severity="secondary"
+                            styleClass="w-full md:w-auto" (click)="resetForm()" [disabled]="predicting">
+                        </button>
+                        <button type="submit" pButton label="Predecir Hábitos Financieros" icon="pi pi-chart-line"
+                            styleClass="w-full md:w-auto" [loading]="predicting" loadingIcon="pi pi-spin pi-spinner"
+                            [disabled]="predictionForm.invalid || predicting">
+                        </button>
+                    </div>
+                </form>
+            </p-card>
+        </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="grid mt-3" *ngIf="showResults && habitoResult && propensionResult">
+        <div class="col-12">
+            <p-card>
+                <div class="text-center mb-4">
+                    <h3 class="text-primary font-bold text-2xl mb-2">
+                        <i class="pi pi-check-circle mr-2"></i>
+                        Resultados de la Predicción
+                    </h3>
+                </div>
+
+                <div class="grid">
+                    <!-- Resultado Hábitos Financieros -->
+                    <div class="col-12 xl:col-6">
+                        <p-panel header="Hábitos Financieros" [toggleable]="false">
+                            <div class="text-center mb-3">
+                                <p-tag [value]="getHabitoLabel(habitoResult.clasificacion)"
+                                    [severity]="getHabitoSeverity(habitoResult.clasificacion)"
+                                    styleClass="text-lg font-bold px-3 py-2">
+                                </p-tag>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="font-semibold mb-2 block">Nivel de Confianza</label>
+                                <p-progressBar
+                                    [value]="habitoResult.confianza > 1 ? habitoResult.confianza : habitoResult.confianza * 100"
+                                    [style]="{'height': '20px'}" [color]="getConfianzaColor(habitoResult.confianza)">
+                                </p-progressBar>
+                                <div class="text-center mt-1">
+                                    <span class="font-semibold">{{ formatPorcentaje(habitoResult.confianza) }}</span>
+                                </div>
+                            </div>
+
+                            <div *ngIf="habitoResult.probabilidades" class="mb-3">
+                                <label class="font-semibold mb-2 block">Probabilidades por Categoría</label>
+                                <div *ngFor="let prob of habitoResult.probabilidades | keyvalue" class="mb-2">
+                                    <div class="flex justify-content-between align-items-center mb-1">
+                                        <span>{{ formatHabitoProbabilityLabel(prob.key) }}</span>
+                                        <span class="font-semibold">{{ formatPorcentaje(prob.value) }}</span>
+                                    </div>
+                                    <p-progressBar [value]="prob.value > 1 ? prob.value : prob.value * 100"
+                                        [style]="{'height': '8px'}"></p-progressBar>
+                                </div>
+                            </div>
+
+                            <div *ngIf="habitoResult.interpretacion" class="mt-3">
+                                <label class="font-semibold mb-2 block">Interpretación</label>
+                                <p class="text-600 line-height-3">{{ habitoResult.interpretacion }}</p>
+                            </div>
+                        </p-panel>
+                    </div>
+
+                    <!-- Resultado Propensión al Ahorro -->
+                    <div class="col-12 xl:col-6">
+                        <p-panel header="Propensión al Ahorro" [toggleable]="false">
+                            <div class="text-center mb-3">
+                                <p-tag [value]="getPropensionLabel(propensionResult.clasificacion)"
+                                    [severity]="getPropensionSeverity(propensionResult.clasificacion)"
+                                    styleClass="text-lg font-bold px-3 py-2">
+                                </p-tag>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="font-semibold mb-2 block">Nivel de Confianza</label>
+                                <p-progressBar
+                                    [value]="propensionResult.confianza > 1 ? propensionResult.confianza : propensionResult.confianza * 100"
+                                    [style]="{'height': '20px'}"
+                                    [color]="getConfianzaColor(propensionResult.confianza)">
+                                </p-progressBar>
+                                <div class="text-center mt-1">
+                                    <span class="font-semibold">{{ formatPorcentaje(propensionResult.confianza)
+                                        }}</span>
+                                </div>
+                            </div>
+
+                            <div *ngIf="propensionResult.probabilidades" class="mb-3">
+                                <label class="font-semibold mb-2 block">Probabilidades</label>
+                                <div *ngFor="let prob of propensionResult.probabilidades | keyvalue" class="mb-2">
+                                    <div class="flex justify-content-between align-items-center mb-1">
+                                        <span>{{ formatPropensionProbabilityLabel(prob.key) }}</span>
+                                        <span class="font-semibold">{{ formatPorcentaje(prob.value) }}</span>
+                                    </div>
+                                    <p-progressBar [value]="prob.value > 1 ? prob.value : prob.value * 100"
+                                        [style]="{'height': '8px'}"></p-progressBar>
+                                </div>
+                            </div>
+
+                            <div *ngIf="propensionResult.interpretacion" class="mt-3">
+                                <label class="font-semibold mb-2 block">Interpretación</label>
+                                <p class="text-600 line-height-3">{{ propensionResult.interpretacion }}</p>
+                            </div>
+                        </p-panel>
+                    </div>
+                </div>
+
+                <!-- Botón para nueva predicción -->
+                <div class="text-center mt-4">
+                    <button type="button" pButton label="Nueva Predicción" icon="pi pi-plus" severity="success"
+                        (click)="resetForm()">
+                    </button>
+                </div>
+            </p-card>
+        </div>
+    </div>
+</div>

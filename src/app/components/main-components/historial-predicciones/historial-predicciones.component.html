@@ -1,0 +1,254 @@
+<div class="historial-container mx-5 my-4">
+  <!-- Header -->
+  <div class="grid">
+    <div class="col-12">
+      <p-card>
+        <div class="text-center mb-4">
+          <h2 class="text-primary font-bold text-3xl mb-2">
+            <i class="pi pi-history mr-2"></i>
+            Historial de Predicciones
+          </h2>
+          <p class="text-600 text-lg">
+            Revisa todas tus predicciones financieras anteriores y su evolución en el tiempo
+          </p>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="grid mt-3">
+    <div class="col-12">
+      <p-card>
+        <p-toolbar>
+          <div class="flex align-items-center justify-content-between w-full">
+            <div class="flex align-items-center gap-3">
+              <button 
+                pButton 
+                icon="pi pi-refresh" 
+                label="Actualizar" 
+                severity="secondary"
+                (click)="refreshHistorial()"
+                [loading]="loading">
+              </button>
+              <p-chip 
+                [label]="'Total: ' + historialItems.length + ' predicciones'" 
+                icon="pi pi-chart-line">
+              </p-chip>
+            </div>
+            
+            <div class="flex align-items-center gap-2">
+              <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input 
+                  pInputText 
+                  type="text" 
+                  [(ngModel)]="searchValue" 
+                  placeholder="Buscar..."
+                  class="w-12rem">
+              </span>
+              <button 
+                pButton 
+                icon="pi pi-times" 
+                severity="secondary" 
+                size="small"
+                (click)="clear()"
+                [disabled]="!searchValue && rangeDates.length === 0">
+              </button>
+            </div>
+          </div>
+        </p-toolbar>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Tabla de Historial -->
+  <div class="grid mt-3">
+    <div class="col-12">
+      <p-card>
+        <p-table 
+          [value]="historialItems" 
+          [loading]="loading"
+          [paginator]="true" 
+          [rows]="10"
+          [rowsPerPageOptions]="[5, 10, 20]"
+          [globalFilterFields]="['predictionInput.edad', 'habitoOutput.clasificacion', 'propensionOutput.clasificacion']"
+          [tableStyle]="{'min-width': '70rem'}"
+          styleClass="p-datatable-gridlines">
+          
+          <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+              <h5 class="m-0">
+                <i class="pi pi-list mr-2"></i>
+                Predicciones Realizadas
+              </h5>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="fecha">
+                <div class="flex align-items-center">
+                  Fecha
+                  <p-sortIcon field="fecha"></p-sortIcon>
+                </div>
+              </th>
+              <th>Datos Personales</th>
+              <th>Datos Financieros</th>
+              <th pSortableColumn="habitoOutput.clasificacion">
+                <div class="flex align-items-center">
+                  Hábitos Financieros
+                  <p-sortIcon field="habitoOutput.clasificacion"></p-sortIcon>
+                </div>
+              </th>
+              <th pSortableColumn="propensionOutput.clasificacion">
+                <div class="flex align-items-center">
+                  Propensión al Ahorro
+                  <p-sortIcon field="propensionOutput.clasificacion"></p-sortIcon>
+                </div>
+              </th>
+              <th>Confianza</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <!-- Fecha -->
+              <td>
+                <div class="flex flex-column">
+                  <span class="font-semibold">{{ item.fecha | date:'dd/MM/yyyy' }}</span>
+                  <small class="text-500">{{ item.fecha | date:'HH:mm' }}</small>
+                </div>
+              </td>
+
+              <!-- Datos Personales -->
+              <td>
+                <div class="flex flex-column gap-1">
+                  <span><strong>Edad:</strong> {{ item.predictionInput.edad }} años</span>
+                  <span><strong>Género:</strong> {{ item.predictionInput.genero }}</span>
+                  <span><strong>Educación:</strong> {{ item.predictionInput.educacion }}</span>
+                </div>
+              </td>
+
+              <!-- Datos Financieros -->
+              <td>
+                <div class="flex flex-column gap-1">
+                  <span><strong>Ingreso:</strong> {{ formatCurrency(item.predictionInput.ingreso) }}</span>
+                  <span><strong>Ahorro:</strong> {{ formatCurrency(item.predictionInput.ahorro) }}</span>
+                  <span><strong>Deuda:</strong> {{ formatCurrency(item.predictionInput.endeudamiento) }}</span>
+                  <span><strong>Tarjetas:</strong> {{ item.predictionInput.tarjetas }}</span>
+                </div>
+              </td>
+
+              <!-- Hábitos Financieros -->
+              <td>
+                <div class="flex flex-column align-items-center gap-2">
+                  <p-tag 
+                    *ngIf="item.habitoOutput"
+                    [value]="getHabitoLabel(item.habitoOutput.clasificacion)" 
+                    [severity]="getHabitoSeverity(item.habitoOutput.clasificacion)"
+                    styleClass="font-bold">
+                  </p-tag>
+                  <span *ngIf="!item.habitoOutput" class="text-500">No disponible</span>
+                </div>
+              </td>
+
+              <!-- Propensión al Ahorro -->
+              <td>
+                <div class="flex flex-column align-items-center gap-2">
+                  <p-tag 
+                    *ngIf="item.propensionOutput"
+                    [value]="getPropensionLabel(item.propensionOutput.clasificacion)" 
+                    [severity]="getPropensionSeverity(item.propensionOutput.clasificacion)"
+                    styleClass="font-bold">
+                  </p-tag>
+                  <span *ngIf="!item.propensionOutput" class="text-500">No disponible</span>
+                </div>
+              </td>
+
+              <!-- Confianza -->
+              <td>
+                <div class="flex flex-column gap-2">
+                  <div *ngIf="item.habitoOutput" class="flex align-items-center gap-2">
+                    <small class="text-500">Hábitos:</small>
+                    <p-badge 
+                      [value]="formatPorcentaje(item.habitoOutput.confianza)" 
+                      [severity]="item.habitoOutput.confianza > 0.8 ? 'success' : item.habitoOutput.confianza > 0.6 ? 'warn' : 'danger'">
+                    </p-badge>
+                  </div>
+                  <div *ngIf="item.propensionOutput" class="flex align-items-center gap-2">
+                    <small class="text-500">Propensión:</small>
+                    <p-badge 
+                      [value]="formatPorcentaje(item.propensionOutput.confianza)" 
+                      [severity]="item.propensionOutput.confianza > 0.8 ? 'success' : item.propensionOutput.confianza > 0.6 ? 'warn' : 'danger'">
+                    </p-badge>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center p-4">
+                <div class="flex flex-column align-items-center gap-3">
+                  <i class="pi pi-chart-line text-4xl text-400"></i>
+                  <span class="text-lg text-600">No se encontraron predicciones</span>
+                  <small class="text-500">Realiza tu primera predicción para ver el historial aquí</small>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="loadingbody">
+            <tr>
+              <td colspan="6" class="text-center p-4">
+                <div class="flex align-items-center justify-content-center gap-2">
+                  <p-progressSpinner [style]="{'width': '30px', 'height': '30px'}"></p-progressSpinner>
+                  <span>Cargando historial...</span>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Estadísticas Resumen (opcional) -->
+  <div class="grid mt-3" *ngIf="historialItems.length > 0">
+    <div class="col-12 md:col-4">
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-chart-pie text-primary text-3xl mb-2"></i>
+          <h4 class="text-primary mb-2">Total Predicciones</h4>
+          <span class="text-2xl font-bold text-900">{{ historialItems.length }}</span>
+        </div>
+      </p-card>
+    </div>
+    
+    <div class="col-12 md:col-4">
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-calendar text-primary text-3xl mb-2"></i>
+          <h4 class="text-primary mb-2">Última Predicción</h4>
+          <span class="text-lg font-bold text-900">
+            {{ historialItems.length > 0 ? (historialItems[0].fecha | date:'dd/MM/yyyy') : 'N/A' }}
+          </span>
+        </div>
+      </p-card>
+    </div>
+    
+    <div class="col-12 md:col-4">
+      <p-card>
+        <div class="text-center">
+          <i class="pi pi-trending-up text-primary text-3xl mb-2"></i>
+          <h4 class="text-primary mb-2">Promedio Confianza</h4>
+          <span class="text-lg font-bold text-900">
+            {{ getPromedioConfianza() }}%
+          </span>
+        </div>
+      </p-card>
+    </div>
+  </div>
+</div>

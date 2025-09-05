@@ -1,0 +1,16 @@
+<div class="flex flex-column min-h-screen">
+  <app-menubar></app-menubar>
+  
+  <div class="flex-1">
+    <!-- Navegación con pestañas -->
+    <div class="navigation-tabs mx-5 mt-4">
+      <p-card>
+        <p-tabMenu [model]="navigationItems" [activeItem]="activeItem" (activeItemChange)="onTabChange($event)"></p-tabMenu>
+      </p-card>
+    </div>
+    
+    <app-formulario></app-formulario>
+  </div>
+  
+  <app-footer></app-footer>
+</div>

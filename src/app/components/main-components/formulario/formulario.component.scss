@@ -1,0 +1,445 @@
+.formulario-container {
+  max-width: 100%;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem 0;
+  box-sizing: border-box;
+  
+  // Asegurar que todo el contenido se mantenga dentro del contenedor
+  * {
+    box-sizing: border-box;
+  }
+  
+  // Prevenir desbordamiento en cualquier elemento
+  .grid,
+  .col-12,
+  .field,
+  p-card,
+  p-fieldset {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+// Ajustar altura de los selects para que coincida con los inputs
+::ng-deep .select-height .p-select {
+  height: 48px !important;
+  min-height: 48px !important;
+  
+  .p-select-label {
+    padding: 12px 1rem !important;
+    line-height: 1.5 !important;
+    min-height: auto !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  .p-select-trigger {
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+}
+
+// Asegurar que todos los selects tengan la misma altura que los inputs
+::ng-deep .p-select {
+  height: 48px !important;
+  min-height: 48px !important;
+  border-radius: 8px !important;
+  border: 2px solid #e9ecef !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  
+  .p-select-label {
+    padding: 12px 1rem !important;
+    line-height: 1.5 !important;
+    min-height: auto !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: calc(100% - 40px) !important;
+  }
+  
+  .p-select-trigger {
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 1rem !important;
+    width: 40px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  &:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+  }
+  
+  &.ng-invalid.ng-touched {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+  }
+}
+
+// Mejorar input numbers para que tengan altura consistente
+::ng-deep .p-inputnumber-input {
+  height: 48px !important;
+  box-sizing: border-box !important;
+  padding: 12px 1rem !important;
+  border-radius: 8px !important;
+  border: 2px solid #e9ecef !important;
+}
+
+::ng-deep .p-inputnumber {
+  width: 100% !important;
+  
+  .p-inputnumber-input {
+    width: 100% !important;
+  }
+}
+
+// Mejorar espaciado en móviles
+@media (max-width: 991px) {
+  .formulario-container {
+    padding: 1rem 0.5rem !important;
+    margin: 0 !important;
+  }
+  
+  .field {
+    margin-bottom: 1.5rem;
+  }
+  
+  .grid {
+    margin: 0 !important;
+  }
+  
+  .col-12 {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  
+  // Asegurar que los selects no desborden en móviles
+  ::ng-deep .p-select {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    
+    .p-select-label {
+      max-width: calc(100% - 45px) !important;
+      font-size: 0.9rem !important;
+    }
+  }
+  
+  // Asegurar que los inputs tampoco desborden
+  ::ng-deep .p-inputtext,
+  ::ng-deep .p-inputnumber,
+  ::ng-deep .p-inputnumber-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  
+  // Controlar el ancho de los contenedores
+  .field {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+}
+
+// Estilos para las cards
+::ng-deep .p-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: none;
+  margin-bottom: 0.5rem;
+  
+  .p-card-body {
+    padding: 2rem;
+  }
+  
+  .p-card-content {
+    padding: 0;
+  }
+}
+
+// Estilos para los fieldsets
+::ng-deep .p-fieldset {
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  margin-bottom: 0rem;
+  
+  .p-fieldset-legend {
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    border: none;
+  }
+  
+  .p-fieldset-content {
+    padding: 1.5rem;
+  }
+}
+
+// Estilos para los campos del formulario
+.field {
+  margin-bottom: 0.5rem;
+  
+  label {
+    display: block;
+    margin-bottom: 0rem;
+    color: #495057;
+    font-weight: 600;
+  }
+}
+
+// Estilos para inputs - altura y estilo consistentes
+::ng-deep .p-inputtext,
+::ng-deep .p-inputnumber-input {
+  height: 48px !important;
+  border-radius: 8px !important;
+  border: 2px solid #e9ecef !important;
+  padding: 12px 1rem !important;
+  transition: all 0.3s ease !important;
+  box-sizing: border-box !important;
+  
+  &:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+  }
+  
+  &.ng-invalid.ng-touched {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+  }
+}
+
+// Eliminar estilos duplicados de select - ya están definidos arriba
+
+
+
+// Estilos para paneles de resultados
+::ng-deep .p-panel {
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
+  
+  .p-panel-header {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-bottom: none;
+  }
+  
+  .p-panel-content {
+    padding: 1rem;
+    background: white;
+    border-radius: 0 0 12px 12px;
+  }
+}
+
+// Estilos para tags
+::ng-deep .p-tag {
+  font-size: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// Estilos para progress bar
+::ng-deep .p-progressbar {
+  border-radius: 10px;
+  background: #e9ecef;
+  
+  .p-progressbar-value {
+    border-radius: 10px;
+    transition: width 0.6s ease-in-out;
+  }
+}
+
+// Estilos para dividers
+::ng-deep .p-divider {
+  margin: 1rem 0;
+  
+  &.p-divider-horizontal:before {
+    border-top: 1px solid #dee2e6;
+  }
+}
+
+// Animaciones para mostrar resultados
+.grid {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Estilos responsivos
+@media (max-width: 991px) {
+  ::ng-deep .p-card .p-card-body {
+    padding: 0.5rem;
+  }
+  
+  ::ng-deep .p-fieldset .p-fieldset-content {
+    padding: 0.5rem;
+  }
+  
+  .field {
+    margin-bottom: 0.5rem;
+  }
+  
+  ::ng-deep .p-button {
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .text-3xl {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+  }
+}
+
+// Estilos adicionales para móviles muy pequeños
+@media (max-width: 480px) {
+  .formulario-container {
+    padding: 0.5rem 0.25rem !important;
+    margin: 0 !important;
+  }
+  
+  .col-12 {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+  }
+  
+  ::ng-deep .p-card .p-card-body {
+    padding: 0.75rem !important;
+  }
+  
+  ::ng-deep .p-fieldset .p-fieldset-content {
+    padding: 0.75rem !important;
+  }
+  
+  // Reducir aún más el tamaño de fuente en selects para móviles pequeños
+  ::ng-deep .p-select .p-select-label {
+    font-size: 0.85rem !important;
+    padding: 10px 0.75rem !important;
+  }
+  
+  ::ng-deep .p-inputtext,
+  ::ng-deep .p-inputnumber-input {
+    font-size: 0.85rem !important;
+    padding: 10px 0.75rem !important;
+  }
+}
+
+// Estilos para mensajes de error
+.text-red-500 {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+// Estilos para el header principal
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-600 {
+  color: #6c757d;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.line-height-3 {
+  line-height: 1.5;
+}
+
+// Estilos para iconos
+.pi {
+  font-size: 1.2em;
+}
+
+// Hover effects para cards
+::ng-deep .p-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+// Estilos para el toast
+::ng-deep .p-toast {
+  .p-toast-message {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Estilos para el contenido de probabilidades
+.probability-item {
+  background: #f8f9fa;
+  padding: 0.5rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+// Efectos de carga
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}

@@ -26,13 +26,72 @@
             <input pInputText formControlName="password" type="password" id="password_label" />
           </p-floatlabel>
         </p-input-group>
-        <button pButton type="submit" [disabled]="form.invalid || loading">
+        <button pButton type="submit" [disabled]="form.invalid || loading" class="w-full mb-3">
           <ng-container *ngIf="loading">
             <span class="pi pi-spin pi-spinner" style="margin-right:8px;"></span>
           </ng-container>
           <span *ngIf="!loading">Ingresar</span>
         </button>
+        
+        <!-- <p-divider align="center">
+          <span class="text-sm text-color-secondary">¿No tienes acceso?</span>
+        </p-divider> -->
+        
+        <button pButton type="button" 
+                class="w-full" 
+                label="Solicitar acceso"
+                icon="pi pi-envelope"
+                (click)="showAccessRequestDialog = true">
+        </button>
       </form>
     </div>
   </div>
+
+  <!-- Diálogo para solicitar acceso -->
+  <p-dialog header="Solicitar Acceso" 
+            [(visible)]="showAccessRequestDialog" 
+            [modal]="true" 
+            [style]="{width: '400px'}"
+            [closable]="true">
+    <form [formGroup]="accessRequestForm" (ngSubmit)="submitAccessRequest()">
+      <div class="field">
+        <label for="email" class="block text-900 font-medium mb-2">Correo electrónico</label>
+        <input pInputText 
+               id="email" 
+               formControlName="email" 
+               placeholder="tu.correo@ejemplo.com"
+               class="w-full" />
+        <small *ngIf="accessRequestForm.get('email')?.invalid && accessRequestForm.get('email')?.touched" 
+               class="text-red-500">
+          Por favor ingresa un correo electrónico válido.
+        </small>
+      </div>
+      
+      <div class="field">
+        <label for="fullName" class="block text-900 font-medium mb-2">Nombre completo</label>
+        <input pInputText 
+               id="fullName" 
+               formControlName="fullName" 
+               placeholder="Tu nombre completo"
+               class="w-full" />
+      </div>
+
+    </form>
+    
+    <ng-template pTemplate="footer">
+      <button pButton 
+              type="button" 
+              label="Cancelar" 
+              class="p-button-text" 
+              (click)="showAccessRequestDialog = false">
+      </button>
+      <button pButton 
+              type="button" 
+              label="Enviar solicitud" 
+              [disabled]="accessRequestForm.invalid || submittingRequest"
+              [loading]="submittingRequest"
+              (click)="submitAccessRequest()">
+      </button>
+    </ng-template>
+  </p-dialog>
 </div>

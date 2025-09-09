@@ -11,6 +11,10 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FormsModule } from '@angular/forms';
 import { RecaptchaV3Module, ReCaptchaV3Service } from 'ng-recaptcha';
+import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
+import { InputTextarea } from 'primeng/inputtextarea';
+import { AccessRequestService } from '../../core/services/access-request/access-request.service';
 
 
 @Component({
@@ -27,7 +31,9 @@ import { RecaptchaV3Module, ReCaptchaV3Service } from 'ng-recaptcha';
     InputGroupModule,
     InputGroupAddonModule,
     FormsModule,
-    RecaptchaV3Module
+    RecaptchaV3Module,
+    DialogModule,
+    DividerModule
   ]
 })
 export class LoginComponent {
@@ -42,12 +48,21 @@ export class LoginComponent {
   private router = inject(Router);
   private toastr = inject(ToastrService);
   private recaptchaV3Service = inject(ReCaptchaV3Service);
+  private accessRequestService = inject(AccessRequestService);
 
   loading = false;
+  showAccessRequestDialog = false;
+  submittingRequest = false;
 
   form = this.fb.group({
     username: ['', Validators.required],
     password: ['', Validators.required]
+  });
+
+  accessRequestForm = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    fullName: ['', Validators.required],
+    reason: ['', Validators.required]
   });
 
   login() {
@@ -84,6 +99,42 @@ export class LoginComponent {
       error: () => {
         this.toastr.error('Error al validar reCAPTCHA.', 'Error de seguridad');
         this.loading = false;
+      }
+    });
+  }
+
+  submitAccessRequest() {
+    if (this.accessRequestForm.invalid) {
+      this.toastr.warning('Por favor, completa todos los campos correctamente.', 'Formulario inválido');
+      return;
+    }
+
+    this.submittingRequest = true;
+
+    const requestData = {
+      email: this.accessRequestForm.value.email!,
+      fullName: this.accessRequestForm.value.fullName!,
+      timestamp: new Date().toISOString()
+    };
+
+    this.accessRequestService.submitRequest(requestData).subscribe({
+      next: (response) => {
+        this.submittingRequest = false;
+        this.showAccessRequestDialog = false;
+        this.accessRequestForm.reset();
+        this.toastr.success(
+          'Tu solicitud ha sido enviada. Te contactaremos pronto.',
+          'Solicitud enviada'
+        );
+        
+      },
+      error: (error) => {
+        console.error('Error enviando solicitud:', error);
+        this.submittingRequest = false;
+        this.toastr.error(
+          'Hubo un error al enviar tu solicitud. Intenta de nuevo.',
+          'Error'
+        );
       }
     });
   }

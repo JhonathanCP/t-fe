@@ -42,9 +42,10 @@
 
     <button *ngIf="showBackButton" pButton icon="pi pi-arrow-left" class="p-button-text mr-1" (click)="goBack()"></button>
 
-    <button pButton icon="pi pi-home" class="p-button-text" (click)="goToLogin()"></button>
-    <!-- <p-tieredMenu [model]="settingsMenuItems" #settingsMenu popup></p-tieredMenu>
-    <button pButton icon="pi pi-cog" class="p-button-text" (click)="settingsMenu.toggle($event)"></button> -->
+    <!-- Botones de navegación -->
+    <button pButton icon="pi pi-home" class="p-button-text" (click)="goToMenu()" pTooltip="Inicio"></button>
+    <button pButton icon="pi pi-chart-line" class="p-button-text ml-1" (click)="goToHistorial()" pTooltip="Historial"></button>
+    <button pButton icon="pi pi-comments" class="p-button-text ml-1" (click)="goToChat()" pTooltip="Chat"></button>
 
     <p-tieredMenu [model]="userMenuItems" #userMenu popup></p-tieredMenu>
     <div class="user-section p-d-flex p-ai-center" (click)="userMenu.toggle($event)" style="cursor: pointer;">      

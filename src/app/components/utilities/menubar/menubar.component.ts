@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router'; // Import Router and Na
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { TooltipModule } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { CommonModule } from '@angular/common';
@@ -22,7 +23,8 @@ import { filter } from 'rxjs/operators';
     ButtonModule,
     DialogModule,
     FormsModule,
-    PasswordModule
+    PasswordModule,
+    TooltipModule
   ],
   templateUrl: './menubar.component.html',
   styleUrls: ['./menubar.component.scss']
@@ -154,6 +156,18 @@ export class MenubarComponent {
 
   goBack() {
     window.history.back();
+  }
+
+  goToMenu() {
+    this.router.navigate(['/menu']);
+  }
+
+  goToHistorial() {
+    this.router.navigate(['/historial']);
+  }
+
+  goToChat() {
+    this.router.navigate(['/chat']);
   }
 
   goToLogin() {
